@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  novenabot:
+    build: .
+    user: root
+    container_name: novenabot
+    volumes:
+      - ./workdir:/app/workdir
+    restart: always
