@@ -90,6 +90,8 @@ async def background_task():
         )
         channel_id, novena_day, novena_name = cursor.fetchone()
         channel = bot.get_channel(channel_id)
+        if channel is None:
+            channel = await bot.fetch_channel(channel_id)
         if novena_day < 9:
             await channel.send(novena_file[novena_name][str(novena_day)]+"\n\n> This is an automated message. If you want to cancel this Novena, send the command /cancelnovena with Novena id " + novena_id + " in the channel were this Novena was sent.")
             novena_day += 1
