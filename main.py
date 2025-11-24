@@ -17,6 +17,29 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS novenas (
 )""")
 conn.commit()
 
+cursor.execute("""CREATE TABLE IF NOT EXISTS sacn (
+        novena_id TEXT PRIMARY KEY,
+        novena_day INTEGER NOT NULL,
+        channel_id INTEGER NOT NULL,
+        daily_count INTEGER NOT NULL,
+        1 INTEGER NOT NULL,
+        2 INTEGER NOT NULL,
+        3 INTEGER NOT NULL,
+        4 INTEGER NOT NULL,
+        5 INTEGER NOT NULL,
+        6 INTEGER NOT NULL,
+        7 INTEGER NOT NULL,
+        8 INTEGER NOT NULL,
+        9 INTEGER NOT NULL,
+        10 INTEGER NOT NULL,
+        11 INTEGER NOT NULL,
+        12 INTEGER NOT NULL,
+        13 INTEGER NOT NULL,
+        14 INTEGER NOT NULL,
+        15 INTEGER NOT NULL
+)""")
+conn.commit()
+
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -46,6 +69,15 @@ async def cancelnovena(interaction: discord.Interaction, novena_id: Optional[str
     if novena_id == "none":
         await interaction.response.send_message("You need to give a valid Novena id. You can find all active Novenas that are available with /activenovenas.")
         return
+    cursor.execute(
+        """SELECT channel_id FROM novenas WHERE novena_id = ?""",
+        (novena_id,)
+    )
+    channel_id = cursor.fetchone()
+    if channel_id == None:
+        await interaction.response.send_message("An active Novena with this Novena id doesn't exist. You need to give a valid active Novena id.")
+    if channel_id != interaction.channel.id:
+        await interaction.response.send_message("You can only stop a Novena in the channel where it was started.")
     cursor.execute(
         """DELETE FROM novenas WHERE novena_id = ?""",
         (novena_id,)
