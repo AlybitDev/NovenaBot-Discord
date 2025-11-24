@@ -103,8 +103,14 @@ async def background_task():
                 (novena_day,time.time(),novena_id,)
             )
             conn.commit()
-        else:
+        elif novena_day == 9:
             await channel.send(novena_file[novena_name][str(novena_day)] + "\n> This is an automated message.")
+            cursor.execute(
+                """DELETE FROM novenas WHERE novena_id = ?""",
+                (novena_id,)
+            )
+            conn.commit()
+        else:
             cursor.execute(
                 """DELETE FROM novenas WHERE novena_id = ?""",
                 (novena_id,)
