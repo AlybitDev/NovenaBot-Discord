@@ -100,7 +100,7 @@ async def newnovena(interaction: discord.Interaction, novena: Optional[str] = "n
         await interaction.response.send_message("A Novena with this name doesn't exist. You can find all Novenas that are available with /listnovenas")
         return
     if day > 9 or day < 1:
-        await interaction.response.send_message("You need to give a number between 1 and 9 as the day. »)
+        await interaction.response.send_message("You need to give a number between 1 and 9 as the day.")
         return
     #if isinstance(interaction.message.channel, discord.DMChannel):
     cursor.execute(
